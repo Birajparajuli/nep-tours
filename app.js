@@ -20,6 +20,17 @@ app.get("/api/v1/treks", (req, res) => {
   });
 });
 
+app.get("/api/v1/treks/:id", (req, res) => {
+  const id = req.params.id * 1;
+  const trek = treks.find((el) => el.id === id);
+  res.json({
+    status: "success",
+    data: {
+      treks: trek,
+    },
+  });
+});
+
 app.post("/api/v1/treks", (req, res) => {
   const newId = treks[treks.length - 1].id + 1;
   const newTrek = Object.assign({ id: newId }, req.body);
