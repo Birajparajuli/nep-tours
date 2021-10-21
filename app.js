@@ -1,14 +1,20 @@
 const fs = require("fs");
 const express = require("express");
+const morgan = require("morgan");
 
 const app = express();
+
+// Middlewares
 app.use(express.json());
+app.use(morgan("dev"));
 
 const port = 3000;
 
 const treks = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/treks-data.json`)
 );
+
+// Route Handlers
 
 const getAllTreks = (req, res) => {
   res.json({
@@ -83,6 +89,8 @@ const deleteTrek = (req, res) => {
   });
 };
 
+// Routes
+
 //app.get("/api/v1/treks", getAllTreks);
 //app.get("/api/v1/treks/:id", getTrek);
 // app.post("/api/v1/treks", createTrek);
@@ -96,6 +104,7 @@ app
   .patch(updateTrek)
   .delete(deleteTrek);
 
+// Server
 app.listen(port, () => {
   console.log(`Hi ! Your app is running on port ${port}`);
 });
