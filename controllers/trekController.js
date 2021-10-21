@@ -4,6 +4,25 @@ const treks = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/treks-data.json`)
 );
 
+exports.checkId = (req, res, next, val) => {
+  if (req.params.id * 1 > treks.length) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Invalid Trek ID",
+    });
+  }
+  next();
+};
+
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.json({
+      status: "fail",
+      message: "Missing name or price",
+    });
+  }
+};
+
 exports.getAllTreks = (req, res) => {
   res.json({
     status: "success",
@@ -15,14 +34,6 @@ exports.getAllTreks = (req, res) => {
 };
 
 exports.getTrek = (req, res) => {
-  const id = req.params.id * 1;
-
-  if (id > treks.length) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Invalid Trek ID",
-    });
-  }
   const trek = treks.find((el) => el.id === id);
   res.json({
     status: "success",
@@ -52,12 +63,6 @@ exports.createTrek = (req, res) => {
 };
 
 exports.updateTrek = (req, res) => {
-  if (req.params.id * 1 > treks.length) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Invalid Trek ID",
-    });
-  }
   res.json({
     status: "success",
     data: "Item Updated",
@@ -65,12 +70,6 @@ exports.updateTrek = (req, res) => {
 };
 
 exports.deleteTrek = (req, res) => {
-  if (req.params.id * 1 > treks.length) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Invalid Trek ID",
-    });
-  }
   res.json({
     status: "success",
     data: null,
