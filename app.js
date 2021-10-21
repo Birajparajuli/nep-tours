@@ -13,15 +13,8 @@ const trekRouter = require("./routes/trekRoutes");
 const userRouter = require("./routes/userRoutes");
 
 // Routes
-
-//app.get("/api/v1/treks", getAllTreks);
-//app.get("/api/v1/treks/:id", getTrek);
-// app.post("/api/v1/treks", createTrek);
-// app.patch("/api/v1/treks/:id", updateTrek);
-// app.delete("/api/v1/treks/:id", deleteTrek);
-
-userRouter.use("/api/v1/treks", trekRouter); //Route Middleware
-userRouter.use("/api/v1/users", userRouter);
+app.use("/api/v1/treks", trekRouter); //Route Middleware
+app.use("/api/v1/users", userRouter);
 
 // Server
 app.listen(port, () => {
