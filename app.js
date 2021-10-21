@@ -10,7 +10,7 @@ const treks = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/treks-data.json`)
 );
 
-app.get("/api/v1/treks", (req, res) => {
+const getAllTreks = (req, res) => {
   res.json({
     status: "success",
     results: treks.length,
@@ -18,9 +18,9 @@ app.get("/api/v1/treks", (req, res) => {
       treks,
     },
   });
-});
+};
 
-app.get("/api/v1/treks/:id", (req, res) => {
+const getTrek = (req, res) => {
   const id = req.params.id * 1;
 
   if (id > treks.length) {
@@ -36,9 +36,9 @@ app.get("/api/v1/treks/:id", (req, res) => {
       treks: trek,
     },
   });
-});
+};
 
-app.post("/api/v1/treks", (req, res) => {
+const createTrek = (req, res) => {
   const newId = treks[treks.length - 1].id + 1;
   const newTrek = Object.assign({ id: newId }, req.body);
   treks.push(newTrek);
@@ -55,9 +55,9 @@ app.post("/api/v1/treks", (req, res) => {
       });
     }
   );
-});
+};
 
-app.patch("/api/v1/treks/:id", (req, res) => {
+const updateTrek = (req, res) => {
   if (req.params.id * 1 > treks.length) {
     return res.status(404).json({
       status: "fail",
@@ -68,9 +68,9 @@ app.patch("/api/v1/treks/:id", (req, res) => {
     status: "success",
     data: "Item Updated",
   });
-});
+};
 
-app.delete("/api/v1/treks/:id", (req, res) => {
+const deleteTrek = (req, res) => {
   if (req.params.id * 1 > treks.length) {
     return res.status(404).json({
       status: "fail",
@@ -81,7 +81,20 @@ app.delete("/api/v1/treks/:id", (req, res) => {
     status: "success",
     data: null,
   });
-});
+};
+
+//app.get("/api/v1/treks", getAllTreks);
+//app.get("/api/v1/treks/:id", getTrek);
+// app.post("/api/v1/treks", createTrek);
+// app.patch("/api/v1/treks/:id", updateTrek);
+// app.delete("/api/v1/treks/:id", deleteTrek);
+
+app.route("/api/v1/treks").get(getAllTreks).post(createTrek);
+app
+  .route("/api/v1/treks/:id")
+  .get(getTrek)
+  .patch(updateTrek)
+  .delete(deleteTrek);
 
 app.listen(port, () => {
   console.log(`Hi ! Your app is running on port ${port}`);
