@@ -21,13 +21,20 @@ exports.getTrek = (req, res) => {
 };
 
 exports.createTrek = async (req, res) => {
-  const newTrek = await Trek.create(req.body);
-  res.json({
-    status: "success",
-    data: {
-      trek: newTrek,
-    },
-  });
+  try {
+    const newTrek = await Trek.create(req.body);
+    res.json({
+      status: "success",
+      data: {
+        trek: newTrek,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: "error occoured",
+    });
+  }
 };
 
 exports.updateTrek = (req, res) => {
