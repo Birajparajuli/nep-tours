@@ -3,12 +3,12 @@ const router = express.Router();
 
 const trekControllers = require("./../controllers/trekController");
 
-router.param("id", trekControllers.checkId);
+// router.param("id", trekControllers.checkId);
 
 router
   .route("/")
   .get(trekControllers.getAllTreks)
-  .post(trekControllers.checkBody, trekControllers.createTrek);
+  .post(trekControllers.createTrek);
 router
   .route("/:id")
   .get(trekControllers.getTrek)
