@@ -47,21 +47,39 @@ exports.createTrek = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      message: "error occoured",
+      message: err,
     });
   }
 };
 
-exports.updateTrek = (req, res) => {
-  res.json({
-    status: "success",
-    data: "Item Updated",
-  });
+exports.updateTrek = async (req, res) => {
+  try {
+    const trek = await Trek.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.json({
+      status: "success",
+      data: "Item Updated",
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
 };
 
-exports.deleteTrek = (req, res) => {
-  res.json({
-    status: "success",
-    data: null,
-  });
+exports.deleteTrek = async (req, res) => {
+  try {
+    await Trek.findByIdAndDelete(req.params.id);
+    res.json({
+      status: "success",
+      data,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
 };
