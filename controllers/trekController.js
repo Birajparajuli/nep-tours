@@ -1,23 +1,38 @@
 const Trek = require("./../models/trekModel");
 
-exports.getAllTreks = (req, res) => {
-  res.json({
-    status: "success",
-    // results: treks.length,
-    // data: {
-    //   treks,
-    // },
-  });
+exports.getAllTreks = async (req, res) => {
+  try {
+    const treks = await Trek.find();
+    res.json({
+      status: "success",
+      results: treks.length,
+      data: {
+        treks,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
 };
 
-exports.getTrek = (req, res) => {
-  // const trek = treks.find((el) => el.id === id);
-  // res.json({
-  //   status: "success",
-  //   data: {
-  //     treks: trek,
-  //   },
-  // });
+exports.getTrek = async (req, res) => {
+  try {
+    const trek = await Trek.findById(req.params.id);
+    res.json({
+      status: "success",
+      data: {
+        treks: trek,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
 };
 
 exports.createTrek = async (req, res) => {
