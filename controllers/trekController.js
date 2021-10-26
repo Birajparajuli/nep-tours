@@ -2,7 +2,10 @@ const Trek = require("./../models/trekModel");
 
 exports.getAllTreks = async (req, res) => {
   try {
-    const treks = await Trek.find();
+    const queryObj = { ...req.query };
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObj[el]);
+    const treks = await Trek.find(queryObj);
     res.json({
       status: "success",
       results: treks.length,
