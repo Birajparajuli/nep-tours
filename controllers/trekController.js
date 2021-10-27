@@ -12,12 +12,23 @@ exports.getAllTreks = async (req, res) => {
     // 2. Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    console.log(JSON.parse(queryStr));
+    // console.log(JSON.parse(queryStr));
+
+    let query = Trek.find(JSON.parse(queryStr));
+
+    //3. Sorting
+
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      console.log(sortBy);
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort("-createdAt");
+    }
 
     // Execute Query
-    // const trek = await query;
+    const treks = await query;
 
-    const treks = await Trek.find(JSON.parse(queryStr));
     res.json({
       status: "success",
       results: treks.length,
