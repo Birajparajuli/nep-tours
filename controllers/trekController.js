@@ -34,9 +34,23 @@ exports.getAllTreks = async (req, res) => {
       query = query.select("-__v");
     }
 
+    // 5. Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTrek = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error("This page dose nor exit !!!");
+    }
+
     // Execute Query
     const treks = await query;
+    //query.sort().select().skip().limit()
 
+    // Send Response
     res.json({
       status: "success",
       results: treks.length,
