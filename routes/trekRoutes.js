@@ -4,6 +4,13 @@ const router = express.Router();
 const trekControllers = require("./../controllers/trekController");
 
 // router.param("id", trekControllers.checkId);
+router
+  .route("/top-5-cheap")
+  .get(trekControllers.aliasTopTreks, trekControllers.getAllTreks);
+
+router
+  .route("latest-treks")
+  .get(trekControllers.aliasLatestTrek, trekControllers.getAllTreks);
 
 router
   .route("/")

@@ -1,5 +1,17 @@
 const Trek = require("./../models/trekModel");
 
+exports.aliasTopTreks = (req, res, next) => {
+  req.query.limit = "5";
+  req.query.sort = "-ratingsAverage,price";
+  req.query.fields = "name,price,ratingsAverage,summary,difficulty";
+  next();
+};
+
+exports.aliasLatestTrek = (req, res, next) => {
+  req.query.limit = 5;
+  req.query.sort = "-createdAt";
+  next();
+};
 exports.getAllTreks = async (req, res) => {
   try {
     console.log(req.query);
@@ -20,7 +32,6 @@ exports.getAllTreks = async (req, res) => {
 
     if (req.query.sort) {
       const sortBy = req.query.sort.split(",").join(" ");
-      console.log(sortBy);
       query = query.sort(sortBy);
     } else {
       query = query.sort("-createdAt");
@@ -43,7 +54,7 @@ exports.getAllTreks = async (req, res) => {
 
     if (req.query.page) {
       const numTrek = await Tour.countDocuments();
-      if (skip >= numTours) throw new Error("This page dose nor exit !!!");
+      if (skip >= numTrek) throw new Error("This page dose nor exit !!!");
     }
 
     // Execute Query
